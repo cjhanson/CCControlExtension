@@ -162,7 +162,7 @@
         // Add the arrow
         if (arrowFile)
         {
-            self.arrow                  = [CCSprite spriteWithFile:arrowFile];
+            self.arrow                  = [CCSprite spriteWithSpriteFrameName:arrowFile];
             [self addChild:_arrow z:0];
         }
 	}
@@ -340,10 +340,10 @@
 {
     if ((self = [super init]))
     {
-        self.background     = [CCSprite spriteWithFile:backgroundFile];
+        self.background     = [CCSprite spriteWithSpriteFrameName:backgroundFile];
         [self addChild:_background];
         
-        self.picker         = [CCSprite spriteWithFile:pickerFile];
+        self.picker         = [CCSprite spriteWithSpriteFrameName:pickerFile];
         [self addChild:_picker];
         
         _length             = length;
@@ -378,7 +378,7 @@
     float limit             = _length + (((self.contentSize.width / 2) - _length) / 2) - 1;
     
     // Update angle
-    float angleDeg          = _huePercentage * 360.0f - 180.0f;
+    float angleDeg          = _hue - 180.0f;
     float angle             = CC_DEGREES_TO_RADIANS(angleDeg);
     
     // Set new position of the picker
@@ -520,12 +520,12 @@
 {
     if ((self = [super init]))
     {
-        self.background = [CCSprite spriteWithFile:backgroundFile];
+        self.background = [CCSprite spriteWithSpriteFrameName:backgroundFile];
         [self addChild:_background];
         
-        [self addChild:[CCSprite spriteWithFile:overlayFile] z:1];
+        [self addChild:[CCSprite spriteWithSpriteFrameName:overlayFile] z:1];
         
-        self.picker     = [CCSprite spriteWithFile:pickerFile];
+        self.picker     = [CCSprite spriteWithSpriteFrameName:pickerFile];
         [self addChild:_picker z:2];
         
         self.contentSize    = [_background contentSize];

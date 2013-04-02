@@ -179,7 +179,14 @@
 {
 #ifdef __IPHONE_OS_VERSION_MAX_ALLOWED
     CCTouchDispatcher * dispatcher  = [CCDirector sharedDirector].touchDispatcher;
-	[dispatcher addTargetedDelegate:self priority:_defaultTouchPriority swallowsTouches:YES];
+    NSInteger priority = _defaultTouchPriority;
+    CCControl *pNode = (CCControl *)_parent;
+    while(pNode && [pNode isKindOfClass:[CCControl class]]){
+        priority = pNode.defaultTouchPriority;
+        pNode = (CCControl *)[pNode parent];
+    }
+    
+	[dispatcher addTargetedDelegate:self priority:priority swallowsTouches:YES];
 #endif
 	[super onEnter];
 }
@@ -375,8 +382,7 @@
 
 - (CGPoint)touchLocation:(UITouch *)touch
 {
-    CGPoint touchLocation   = [touch locationInView:[touch view]];                      // Get the touch position
-    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];  // Convert the position to GL space
+    CGPoint touchLocation   = [[CCDirector sharedDirector] convertTouchToGL:touch];  // Convert the position to GL space
     touchLocation           = [self convertToNodeSpace:touchLocation];                  // Convert to the node space of this class
     
     return touchLocation;
@@ -384,8 +390,7 @@
 
 - (BOOL)isTouchInside:(UITouch *)touch
 {
-    CGPoint touchLocation   = [touch locationInView:[touch view]];                      // Get the touch position
-    touchLocation           = [[CCDirector sharedDirector] convertToGL:touchLocation];  // Convert the position to GL space
+    CGPoint touchLocation   = [[CCDirector sharedDirector] convertTouchToGL:touch];  // Convert the position to GL space
     touchLocation           = [[self parent] convertToNodeSpace:touchLocation];         // Convert to the node space of this class
 
     return [self isPointInside:touchLocation];
